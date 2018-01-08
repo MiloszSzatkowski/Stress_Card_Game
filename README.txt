@@ -1,6 +1,6 @@
 My readme
 
-This project is all about getting to know React native, node.js, android and their workflow with github.
+This project is made in Unity with C# usage. It serves me learning and makes my leisure.
 
 Meanhile I hope I'll be able to land this extremely addictive game concept, which I stumbled upon in my childhood. Who had brought me this idea - I don't know, but I remember playing this game once in elementary school and from that day I wished to recreate the rules and make fully responsive application. God it took so long.
 
