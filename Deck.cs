@@ -14,6 +14,11 @@ public class Deck : MonoBehaviour {
 	public List<Sprite> player1_cards = new List<Sprite>();
 	public List<Sprite> player2_cards = new List<Sprite>();
 
+	//stwórz stosy na środku
+	public List<Sprite> stosLewa = new List<Sprite>();
+  public List<Sprite> stosPrawa = new List<Sprite>();
+
+	//losowa lista do tasowania
 	public List<int> random_list = new List<int>();
 
 	public int temp;

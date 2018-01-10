@@ -12,9 +12,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 	public int index;
 
 	void Start (){
-		gameObject.GetComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0);
+
 		startPosition = this.transform.position;
-		Color tempCol = new Color(0,0,0,0);
 	}
 
 	public void OnBeginDrag (PointerEventData eventData){
@@ -34,22 +33,17 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 			this.transform.position =  Vector2.Lerp (
 			this.transform.position,
 			(Vector2)GameObject.Find("LeftCard").transform.position + new Vector2(Random.Range(0,3),Random.Range(0,3)), 1);
+			_Deck.stosLewa.Add(this.GetComponent<UnityEngine.UI.Image>().sprite);
 		} else if (this.transform.position.x > Screen.width / 2){
 			this.transform.position =  Vector2.Lerp (
 			this.transform.position,
 			(Vector2)GameObject.Find("RightCard").transform.position + new Vector2(Random.Range(0,3),Random.Range(0,3)), 1);
+			_Deck.stosPrawa.Add(this.GetComponent<UnityEngine.UI.Image>().sprite);
 		} else {
 			this.transform.position = startPosition;
 		}
 
-
-		// index = Mathf.RoundToInt(Random.Range(0,_Deck.cards.Count));
-		// gameObject.GetComponent<UnityEngine.UI.Image>().sprite = _Deck.cards_Instance[index];
-
 	}
 
-	// public bool isEqualToNoColor(string st){
-	// 	// return GameObject.Find(st).GetComponent<UnityEngine.UI.Image>().color.Equals(tempCol);
-	// }
 
 }
