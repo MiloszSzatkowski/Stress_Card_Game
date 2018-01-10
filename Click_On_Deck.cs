@@ -71,6 +71,7 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 			NewCards.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("SP_Cards_On_Table").transform,true); //make a child of
 		}
 
+		NewCards.name = slot;
 		this.transform.position = (Vector2)this.transform.position - new Vector2(1000f,1000f);
 		this.GetComponent<UnityEngine.UI.Image>().color = new Color (0,0,0,0);
 	}
