@@ -76,6 +76,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				} else {
 					if(checkIfDropAllowed("left")){
 						addCardToThe("LeftCard");
+						//ARE WE THERE ALREADY?
+						checkIfThisMoveWins();
 					} else {
 						Deb.Debug_Logger("Wrong sign or value of the card. Try a different one.");
 						this.transform.position = startPosition;
@@ -88,6 +90,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				} else {
 					if(checkIfDropAllowed("right")){
 						addCardToThe("RightCard");
+						//ARE WE THERE ALREADY?
+						checkIfThisMoveWins();
 					} else {
 						Deb.Debug_Logger("Wrong sign or value of the card. Try a different one.");
 						this.transform.position = startPosition;
@@ -285,5 +289,17 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 			return false;
 		}
 	}
+
+		public bool checkIfThisMoveWins(){
+			if (_Deck.player1_cards.Count==0) {
+				return true;
+				Deb.Debug_Logger("Player 1 won :) !");
+			} else if (_Deck.player1_cards.Count==0) {
+				return true;
+				Deb.Debug_Logger("Player 2 won :) !");
+			} else {
+				return false;
+			}
+		}
 
 }

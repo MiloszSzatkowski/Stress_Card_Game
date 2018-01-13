@@ -56,26 +56,28 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 		}
 
 	public void addCardCheck(string slot){
-		NewCards = Instantiate(GameObject.Find("Card_Prefab"), Vector2.zero, Quaternion.identity);
-		NewCards.AddComponent<UnityEngine.UI.Image>();
-		NewCards.GetComponent<UnityEngine.UI.Image>().color = new Color (1,1,1,1);
 
-		if (this.transform.position.y<Screen.height/2) {
-			NewCards.GetComponent<UnityEngine.UI.Image>().sprite = __Deck_1_.player1_cards[0]; //Set the Sprite
-			__Deck_1_.player1_cards.Remove(__Deck_1_.player1_cards[0]);
-			NewCards.transform.position = GameObject.Find(slot).transform.position;
-			NewCards.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("FP_Cards_On_Table").transform,true); //make a child of
-		} else {
-			NewCards.GetComponent<UnityEngine.UI.Image>().sprite = __Deck_1_.player2_cards[0]; //Set the Sprite
-			__Deck_1_.player2_cards.Remove(__Deck_1_.player2_cards[0]);
-			NewCards.transform.position = GameObject.Find(slot).transform.position;
-			NewCards.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("SP_Cards_On_Table").transform,true); //make a child of
-		}
+			NewCards = Instantiate(GameObject.Find("Card_Prefab"), Vector2.zero, Quaternion.identity);
+			NewCards.AddComponent<UnityEngine.UI.Image>();
+			NewCards.GetComponent<UnityEngine.UI.Image>().color = new Color (1,1,1,1);
 
-		NewCards.name = slot;
-		this.transform.position = (Vector2)this.transform.position - new Vector2(1000f,1000f);
-		this.GetComponent<UnityEngine.UI.Image>().color = new Color (0,0,0,0);
-		Deb.Debug_Logger("The card has been placed on the table.");
+			if (this.transform.position.y<Screen.height/2) {
+				NewCards.GetComponent<UnityEngine.UI.Image>().sprite = __Deck_1_.player1_cards[0]; //Set the Sprite
+				__Deck_1_.player1_cards.Remove(__Deck_1_.player1_cards[0]);
+				NewCards.transform.position = GameObject.Find(slot).transform.position;
+				NewCards.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("FP_Cards_On_Table").transform,true); //make a child of
+			} else {
+				NewCards.GetComponent<UnityEngine.UI.Image>().sprite = __Deck_1_.player2_cards[0]; //Set the Sprite
+				__Deck_1_.player2_cards.Remove(__Deck_1_.player2_cards[0]);
+				NewCards.transform.position = GameObject.Find(slot).transform.position;
+				NewCards.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("SP_Cards_On_Table").transform,true); //make a child of
+			}
+			
+			NewCards.name = slot;
+			this.transform.position = (Vector2)this.transform.position - new Vector2(1000f,1000f);
+			this.GetComponent<UnityEngine.UI.Image>().color = new Color (0,0,0,0);
+			Deb.Debug_Logger("The card has been placed on the table.");
 	}
+
 
 }
