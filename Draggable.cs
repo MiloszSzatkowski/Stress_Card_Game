@@ -44,18 +44,27 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 	}
 
 	public void OnBeginDrag (PointerEventData eventData){
-			startPosition = this.transform.position;
-			this.GetComponent<UnityEngine.UI.Image>().color= new Color (255,255,0);
-			dragOffset = eventData.position - (Vector2)this.transform.position;
-			this.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("Canvas").transform,true);
-			this.GetComponent<RectTransform>().SetAsLastSibling();
+			if (isDraggable==true) {
+				startPosition = this.transform.position;
+				this.GetComponent<UnityEngine.UI.Image>().color= new Color (255,255,0);
+				dragOffset = eventData.position - (Vector2)this.transform.position;
+				this.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("Canvas").transform,true);
+				this.GetComponent<RectTransform>().SetAsLastSibling();
+			} else {
+				Debug.Log("Card cannot be moved");
+			}
 	}
 
 	public void OnDrag (PointerEventData eventData){
+		if (isDraggable==true) {
 			this.transform.position = eventData.position - dragOffset;
+		} else {
+			Debug.Log("Card cannot be moved");
+		}
 	}
 
 	public void OnEndDrag (PointerEventData eventData){
+		if (isDraggable==true) {
 		this.GetComponent<UnityEngine.UI.Image>().color= new Color (1,1,1,1);
 			if(this.transform.position.y < 110){
 					this.transform.position = startPosition;
@@ -86,7 +95,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 			} else {
 				this.transform.position = startPosition;
 			}
-}
+		} else {
+			Debug.Log("Card cannot be moved");
+		}
+	}
 
 	public void addCardToThe(string whichDeck){
 		this.transform.position =  Vector2.Lerp (
