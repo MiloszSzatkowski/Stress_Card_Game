@@ -8,6 +8,7 @@ public class Click_On_Stress : MonoBehaviour {
 	public Deck _Main_Deck;
 	public Draggable _Draggable;
 	public Debbug_Logger_Script Deb;
+	public List<Sprite> temp = new List<Sprite>();
 
 	// Use this for initialization
 	void Start () {
@@ -18,9 +19,22 @@ public class Click_On_Stress : MonoBehaviour {
 		Deb.Debug_Logger("You clicked 'Stress!' ");
 		if (checkIfTheCardsHaveTheSameValue()) {
 			Deb.Debug_Logger("You nailed it. Cards were the same value.");
+		} else if (_Main_Deck.stosLewa.Count==0 || _Main_Deck.stosPrawa.Count==0){
+			Deb.Debug_Logger("There are simply no cards to be taken.");
 		} else {
 			Deb.Debug_Logger("You lost it. Cards were different.");
+			passCardsToTheLoser();
 		}
+	}
+
+	public void passCardsToTheLoser(){
+		for (int i = 0; i < _Main_Deck.stosLewa.Count; i++) {
+			temp.Add(_Main_Deck.stosLewa[i]);
+		}
+		for (int i = 0; i < _Main_Deck.stosPrawa.Count; i++) {
+			temp.Add(_Main_Deck.stosPrawa[i]);
+		}
+		Deb.Debug_Logger(GameObject.FindGameObjectsWithTag("DELETE_ME")[0].name);
 	}
 
 	public bool checkIfTheCardsHaveTheSameValue(){

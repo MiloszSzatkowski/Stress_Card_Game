@@ -73,9 +73,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				//Card is dropped on LEFT STACK
 				if (_Deck.stosLewa.Count==0) {
 					addCardToThe("LeftCard");
+					this.tag = "DELETE_ME";
 				} else {
 					if(checkIfDropAllowed("left")){
 						addCardToThe("LeftCard");
+						//change the name for deletion afterwards
+						this.tag = "DELETE_ME";
 						//ARE WE THERE ALREADY?
 						checkIfThisMoveWins();
 					} else {
@@ -87,9 +90,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				//Card is dropped on RIGHT STACK
 				if (_Deck.stosPrawa.Count==0) {
 					addCardToThe("RightCard");
+					this.tag = "DELETE_ME";
 				} else {
 					if(checkIfDropAllowed("right")){
 						addCardToThe("RightCard");
+						//change the name for deletion afterwards
+						this.tag = "DELETE_ME";
 						//ARE WE THERE ALREADY?
 						checkIfThisMoveWins();
 					} else {
