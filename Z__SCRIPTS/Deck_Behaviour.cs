@@ -11,6 +11,7 @@ public class Deck_Behaviour : MonoBehaviour{
 	public GameObject Back_Card;
 	public List<Sprite> Player_1_Deck_Back = new List<Sprite>();
 	public List<Sprite> Player_2_Deck_Back = new List<Sprite>();
+	public Debbug_Logger_Script Deb;
 
 	// Use this for initialization
 	void Start () {
@@ -35,7 +36,6 @@ public class Deck_Behaviour : MonoBehaviour{
 			Back_Card.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("SP_Cards_In_Deck").transform,true); //make a child of
 		}
 
-		Debug.Log("Start");
 	}
 
 }

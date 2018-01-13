@@ -15,11 +15,11 @@ public class Click_On_Stress : MonoBehaviour {
 	}
 
 	public void triggerStressEvent (){
-		Debug.Log("You clicked 'Stress!' ");
+		Deb.Debug_Logger("You clicked 'Stress!' ");
 		if (checkIfTheCardsHaveTheSameValue()) {
-			Debug.Log("You nailed it.");
+			Deb.Debug_Logger("You nailed it. Cards were the same value.");
 		} else {
-			Debug.Log("You lost it. Cards were different.");
+			Deb.Debug_Logger("You lost it. Cards were different.");
 		}
 	}
 
@@ -29,13 +29,13 @@ public class Click_On_Stress : MonoBehaviour {
 					_Main_Deck.stosPrawa[_Main_Deck.stosPrawa.Count-1].name
 					)
 			 ) {
-				 Debug.Log("The cards have the same value.");
+				 Deb.Debug_Logger("The cards have the same value.");
 			return true;
 		} else if (
 		checkIfCardIsJoker(_Main_Deck.stosLewa[_Main_Deck.stosLewa.Count-1].name)
  ||	checkIfCardIsJoker(_Main_Deck.stosPrawa[_Main_Deck.stosPrawa.Count-1].name)
 		){
-			Debug.Log("One of the cards was a Joker.");
+			Deb.Debug_Logger("One of the cards was a Joker.");
 			return true;
 		} else {
 			return false;

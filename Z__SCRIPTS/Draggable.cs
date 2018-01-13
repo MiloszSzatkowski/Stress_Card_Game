@@ -11,6 +11,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 	public Deck _Deck;
 	public bool isDraggable = true;
 	public Slot_Watcher __Slot_Watcher;
+	public Debbug_Logger_Script Deb;
 
 	//Lists of same cards
 	public List<string> c2s =  new List<string>();
@@ -51,7 +52,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				this.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("Canvas").transform,true);
 				this.GetComponent<RectTransform>().SetAsLastSibling();
 			} else {
-				Debug.Log("Card cannot be moved");
+				Deb.Debug_Logger("Card cannot be moved after drop.");
 			}
 	}
 
@@ -59,7 +60,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 		if (isDraggable==true) {
 			this.transform.position = eventData.position - dragOffset;
 		} else {
-			Debug.Log("Card cannot be moved");
+			Deb.Debug_Logger("Card cannot be moved after drop.");
 		}
 	}
 
@@ -76,7 +77,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 					if(checkIfDropAllowed("left")){
 						addCardToThe("LeftCard");
 					} else {
-						Debug.Log("Drop is not allowed.");
+						Deb.Debug_Logger("Wrong sign or value of the card. Try a different one.");
 						this.transform.position = startPosition;
 					}
 				}
@@ -88,7 +89,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 					if(checkIfDropAllowed("right")){
 						addCardToThe("RightCard");
 					} else {
-						Debug.Log("Drop is not allowed.");
+						Deb.Debug_Logger("Wrong sign or value of the card. Try a different one.");
 						this.transform.position = startPosition;
 					}
 				}
@@ -96,7 +97,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				this.transform.position = startPosition;
 			}
 		} else {
-			Debug.Log("Card cannot be moved");
+			Deb.Debug_Logger("Card cannot be moved after drop.");
 		}
 	}
 
@@ -112,6 +113,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 		isDraggable = false;
 		//EMPTY slot for other cards
 		checkNamesForSlot();
+		Deb.Debug_Logger("The card has been dropped.");
 	}
 
 	public void checkNamesForSlot(){
@@ -136,7 +138,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
 	public bool checkIfDropAllowed (string side){
 		if (side=="left") {
-			// Debug.Log(_Deck.stosLewa[_Deck.stosLewa.Count-1].name);
+			// Deb.Debug_Logger(_Deck.stosLewa[_Deck.stosLewa.Count-1].name);
 			if (_Deck.stosLewa[_Deck.stosLewa.Count-1].name=="j1"
 			||  _Deck.stosLewa[_Deck.stosLewa.Count-1].name=="j2"
 			||  _Deck.stosLewa[_Deck.stosLewa.Count-1].name=="j3"
@@ -165,7 +167,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 				return false;
 			}
 		} else if (side=="right"){
-			// Debug.Log(_Deck.stosPrawa[_Deck.stosPrawa.Count-1].name);
+			// Deb.Debug_Logger(_Deck.stosPrawa[_Deck.stosPrawa.Count-1].name);
 			if (_Deck.stosPrawa[_Deck.stosPrawa.Count-1].name=="j1"
 			||  _Deck.stosPrawa[_Deck.stosPrawa.Count-1].name=="j2"
 			||  _Deck.stosPrawa[_Deck.stosPrawa.Count-1].name=="j3"
@@ -196,7 +198,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 		} else {
 			return false;
 		}
-		// Debug.Log(this.GetComponent<UnityEngine.UI.Image>().sprite.name);
+		// Deb.Debug_Logger(this.GetComponent<UnityEngine.UI.Image>().sprite.name);
 	}
 
 	public int checkWhatCardItIs(string shortName){
@@ -252,7 +254,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
 	public bool checkIfTheCardValueIsTheSame(string firstCard, string secondCard){
 		if (c2s.Contains(firstCard) && c2s.Contains(secondCard)){
-			return true; 
+			return true;
 		} else if (c2s.Contains(firstCard) && c2s.Contains(secondCard)){
 			return true;
 		} else if (c3s.Contains(firstCard) && c3s.Contains(secondCard)){

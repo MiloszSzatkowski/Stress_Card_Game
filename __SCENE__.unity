@@ -1824,6 +1824,7 @@ MonoBehaviour:
   Back_Card: {fileID: 0}
   Player_1_Deck_Back: []
   Player_2_Deck_Back: []
+  Deb: {fileID: 1968903113}
 --- !u!114 &926679490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2581,6 +2582,11 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 114817841969759438, guid: d7731bdcbea1be340a50544df5839eb8,
+        type: 2}
+      propertyPath: Deb
+      value: 
+      objectReference: {fileID: 1968903113}
     m_RemovedComponents:
     - {fileID: 114501692155794838, guid: d7731bdcbea1be340a50544df5839eb8, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: d7731bdcbea1be340a50544df5839eb8, type: 2}
@@ -3588,6 +3594,7 @@ MonoBehaviour:
   __Deck_1_: {fileID: 1012851998}
   NewCards: {fileID: 0}
   _Deck_Behaviour: {fileID: 926679489}
+  Deb: {fileID: 1968903113}
 --- !u!224 &1951221401 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224930123520405978, guid: 0d9fb1aed6c76ec4eaaaffa29d1be55a,

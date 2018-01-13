@@ -10,6 +10,7 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 	public Deck __Deck_1_;
 	public GameObject NewCards;
 	public Deck_Behaviour _Deck_Behaviour;
+	public Debbug_Logger_Script Deb;
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +33,7 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 						} else if (_Slot_Watcher.slot4==false){
 							_Slot_Watcher.slot4=true;	addCardCheck("slot_4");
 
-						} else {				Debug.Log("All of the slots are taken.");			}
+						} else {				Deb.Debug_Logger("You cannot withdraw more cards.");			}
 
 				} else if (this.transform.position.y>Screen.height/2) {
 
@@ -48,7 +49,7 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 						} else if (_Slot_Watcher.slot8==false){
 							_Slot_Watcher.slot8=true;	addCardCheck("slot_8");
 
-						} else {				Debug.Log("All of the slots are taken.");			}
+						} else {				Deb.Debug_Logger("You cannot withdraw more cards.");			}
 
 				}
 
@@ -74,6 +75,7 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 		NewCards.name = slot;
 		this.transform.position = (Vector2)this.transform.position - new Vector2(1000f,1000f);
 		this.GetComponent<UnityEngine.UI.Image>().color = new Color (0,0,0,0);
+		Deb.Debug_Logger("The card has been placed on the table.");
 	}
 
 }
