@@ -85,19 +85,19 @@ public class Deck : MonoBehaviour {
 				return true;
 			} else if (
 			player1_cards.Count == 0
-			&&	_Slot_Watcher.slot5==true
-			&&	_Slot_Watcher.slot6==true
-			&&	_Slot_Watcher.slot7==true
-			&&	_Slot_Watcher.slot8==true
+			&&	_Slot_Watcher.slot1==true
+			&&	_Slot_Watcher.slot2==true
+			&&	_Slot_Watcher.slot3==true
+			&&	_Slot_Watcher.slot4==true
 			&& areThereCardsOnPilesInTheMiddle()
 			){
 				return true;
 			} else if (
 			player2_cards.Count == 0
-			&&	_Slot_Watcher.slot1==true
-			&&	_Slot_Watcher.slot2==true
-			&&	_Slot_Watcher.slot3==true
-			&&	_Slot_Watcher.slot4==true
+			&&	_Slot_Watcher.slot5==true
+			&&	_Slot_Watcher.slot6==true
+			&&	_Slot_Watcher.slot7==true
+			&&	_Slot_Watcher.slot8==true
 			&& areThereCardsOnPilesInTheMiddle()
 			){
 				return true;
