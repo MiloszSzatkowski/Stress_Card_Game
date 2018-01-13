@@ -252,7 +252,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
 	public bool checkIfTheCardValueIsTheSame(string firstCard, string secondCard){
 		if (c2s.Contains(firstCard) && c2s.Contains(secondCard)){
-			return true;
+			return true; 
 		} else if (c2s.Contains(firstCard) && c2s.Contains(secondCard)){
 			return true;
 		} else if (c3s.Contains(firstCard) && c3s.Contains(secondCard)){

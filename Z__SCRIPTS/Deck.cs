@@ -22,6 +22,7 @@ public class Deck : MonoBehaviour {
 	public List<int> random_list = new List<int>();
 
 	public int temp;
+	public Debbug_Logger_Script Deb;
 
 	void Start () {
 		//creating random list of indexes
@@ -55,6 +56,7 @@ public class Deck : MonoBehaviour {
 
 				}
 				// end of Start
+				Deb.Debug_Logger("Game has started. Good Luck.");
 		}
 
 	// end of MonoBehaviour
