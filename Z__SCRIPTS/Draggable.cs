@@ -127,23 +127,24 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 	}
 
 	public void checkNamesForSlot(){
-		if (this.name=="slot_1"){
+		if (this.name=="slot_1_real"){
 			__Slot_Watcher.slot1 = false;
-		} else if (this.name=="slot_2"){
+		} else if (this.name=="slot_2_real"){
 			__Slot_Watcher.slot2 = false;
-		} else if (this.name=="slot_3"){
+		} else if (this.name=="slot_3_real"){
 			__Slot_Watcher.slot3 = false;
-		} else if (this.name=="slot_4"){
+		} else if (this.name=="slot_4_real"){
 			__Slot_Watcher.slot4 = false;
-		} else if (this.name=="slot_5"){
+		} else if (this.name=="slot_5_real"){
 			__Slot_Watcher.slot5 = false;
-		} else if (this.name=="slot_6"){
+		} else if (this.name=="slot_6_real"){
 			__Slot_Watcher.slot6 = false;
-		} else if (this.name=="slot_7"){
+		} else if (this.name=="slot_7_real"){
 			__Slot_Watcher.slot7 = false;
-		} else if (this.name=="slot_8"){
+		} else if (this.name=="slot_8_real"){
 			__Slot_Watcher.slot8 = false;
 		}
+		Deb.Debug_Logger(this.name + "has been made empty.");
 	}
 
 	public bool checkIfDropAllowed (string side){

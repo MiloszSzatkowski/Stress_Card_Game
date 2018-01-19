@@ -5,7 +5,8 @@ using UnityEngine;
 public class Debbug_Logger_Script : MonoBehaviour {
 
 	public void Debug_Logger (string inputText){
+		Debug.Log(inputText);
 		GameObject.Find("Debug_Logging_Text").GetComponent<UnityEngine.UI.Text>().text = inputText;
 	}
-	
+
 }

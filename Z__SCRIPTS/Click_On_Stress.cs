@@ -10,6 +10,9 @@ public class Click_On_Stress : MonoBehaviour {
 	public Debbug_Logger_Script Deb;
 	public List<Sprite> temp = new List<Sprite>();
 
+	//temporary integer
+public int tempCount;
+
 	// Use this for initialization
 	void Start () {
 		this.GetComponent<Button>().onClick.AddListener(triggerStressEvent);
@@ -17,10 +20,10 @@ public class Click_On_Stress : MonoBehaviour {
 
 	public void triggerStressEvent (){
 		Deb.Debug_Logger("You clicked 'Stress!' ");
-		if (checkIfTheCardsHaveTheSameValue()) {
+		if (checkIfTheCardsHaveTheSameValue() || _Main_Deck.blocked==true) {
 			Deb.Debug_Logger("You nailed it. Cards were the same value.");
 		} else if (_Main_Deck.stosLewa.Count==0 || _Main_Deck.stosPrawa.Count==0){
-			Deb.Debug_Logger("There are simply no cards to be taken.");
+			Deb.Debug_Logger("There are no cards to be taken.");
 		} else {
 			Deb.Debug_Logger("You lost it. Cards were different.");
 			passCardsToTheLoser();
@@ -36,9 +39,36 @@ public class Click_On_Stress : MonoBehaviour {
 		}
 		GameObject[] tagOfCard = GameObject.FindGameObjectsWithTag("DELETE_ME");
 		foreach (GameObject tagOf in tagOfCard ){
-			// Deb.Debug_Logger(GameObject.FindGameObjectsWithTag("DELETE_ME")[i].name);
+			Deb.Debug_Logger(tagOf.name + " " + "has been deleted.");
 			Destroy(tagOf);
 		}
+		Deb.Debug_Logger("All cards added to temporary list.");
+		//only player 1 is going to take cards for now -- fixed AI Slot_Watcher
+		for (int i = 0; i < temp.Count; i++) {
+			_Main_Deck.player1_cards.Add(temp[i]);
+		}
+		string whichPlayer = "Player's 1";
+		Deb.Debug_Logger("Cards added to" + whichPlayer + "deck.");
+		tempCount = temp.Count;
+		for (int i = 0; i < tempCount; i++) {
+			temp.Remove(temp[i]);
+		}
+		Deb.Debug_Logger("All cards removed from temporary list.");
+		deleteCardsOnStacks();
+		Deb.Debug_Logger("All cards removed from real lists.");
+	}
+
+	public void deleteCardsOnStacks(){
+		tempCount = _Main_Deck.stosPrawa.Count;
+		for (int i = 0; i < tempCount; i++) {
+			_Main_Deck.stosPrawa.Remove(_Main_Deck.stosPrawa[i]);
+		}
+		Deb.Debug_Logger("Cards from right stack removed.");
+		tempCount = _Main_Deck.stosLewa.Count;
+		for (int i = 0; i < tempCount; i++) {
+			_Main_Deck.stosPrawa.Remove(_Main_Deck.stosLewa[i]);
+		}
+		Deb.Debug_Logger("Cards from left stack removed.");
 	}
 
 	public bool checkIfTheCardsHaveTheSameValue(){

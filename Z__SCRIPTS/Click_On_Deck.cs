@@ -72,8 +72,9 @@ public class Click_On_Deck : MonoBehaviour, IPointerDownHandler   {
 				NewCards.transform.position = GameObject.Find(slot).transform.position;
 				NewCards.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("SP_Cards_On_Table").transform,true); //make a child of
 			}
-			
-			NewCards.name = slot;
+
+			Deb.Debug_Logger("Card has been added to " + slot);
+			NewCards.name = slot + "_real";
 			this.transform.position = (Vector2)this.transform.position - new Vector2(1000f,1000f);
 			this.GetComponent<UnityEngine.UI.Image>().color = new Color (0,0,0,0);
 			Deb.Debug_Logger("The card has been placed on the table.");
