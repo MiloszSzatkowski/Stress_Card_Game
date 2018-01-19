@@ -34,7 +34,11 @@ public class Click_On_Stress : MonoBehaviour {
 		for (int i = 0; i < _Main_Deck.stosPrawa.Count; i++) {
 			temp.Add(_Main_Deck.stosPrawa[i]);
 		}
-		Deb.Debug_Logger(GameObject.FindGameObjectsWithTag("DELETE_ME")[0].name);
+		GameObject[] tagOfCard = GameObject.FindGameObjectsWithTag("DELETE_ME");
+		foreach (GameObject tagOf in tagOfCard ){
+			// Deb.Debug_Logger(GameObject.FindGameObjectsWithTag("DELETE_ME")[i].name);
+			Destroy(tagOf);
+		}
 	}
 
 	public bool checkIfTheCardsHaveTheSameValue(){
