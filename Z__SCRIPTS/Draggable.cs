@@ -64,7 +64,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 		}
 	}
 
-	public void OnEndDrag (PointerEventData eventData){
+	public void OnEndDrag (PointerEventData eventData) {
 		if (isDraggable==true) {
 		this.GetComponent<UnityEngine.UI.Image>().color= new Color (1,1,1,1);
 			if(this.transform.position.y < 110){
@@ -80,7 +80,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 						//change the name for deletion afterwards
 						this.tag = "DELETE_ME";
 						//ARE WE THERE ALREADY?
-						checkIfThisMoveWins();
+						if (checkIfThisMoveWins()) {
+							Deb.Debug_Logger("Player won.");
+						}
 					} else {
 						Deb.Debug_Logger("Wrong sign or value of the card. Try a different one.");
 						this.transform.position = startPosition;
@@ -97,7 +99,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 						//change the name for deletion afterwards
 						this.tag = "DELETE_ME";
 						//ARE WE THERE ALREADY?
-						checkIfThisMoveWins();
+						if (checkIfThisMoveWins()) {
+							Deb.Debug_Logger("Player won.");
+						}
 					} else {
 						Deb.Debug_Logger("Wrong sign or value of the card. Try a different one.");
 						this.transform.position = startPosition;
@@ -214,7 +218,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
 	public int checkWhatCardItIs(string shortName){
 		int i = 0; // 0==undefined
-
 		if (shortName=="c (2)"
 		||  shortName=="c (3)"
 		||  shortName=="c (4)"
@@ -298,12 +301,20 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 	}
 
 		public bool checkIfThisMoveWins(){
-			if (_Deck.player1_cards.Count==0) {
+			if (_Deck.player1_cards.Count==0 &&
+			__Slot_Watcher.slot1 == false &&
+			__Slot_Watcher.slot2 == false &&
+			__Slot_Watcher.slot3 == false &&
+			__Slot_Watcher.slot4 == false) {
 				return true;
-				Deb.Debug_Logger("Player 1 won :) !");
-			} else if (_Deck.player1_cards.Count==0) {
+
+			} else if (_Deck.player2_cards.Count==0 &&
+			__Slot_Watcher.slot5 == false &&
+			__Slot_Watcher.slot6 == false &&
+			__Slot_Watcher.slot7 == false &&
+			__Slot_Watcher.slot8 == false) {
 				return true;
-				Deb.Debug_Logger("Player 2 won :) !");
+
 			} else {
 				return false;
 			}

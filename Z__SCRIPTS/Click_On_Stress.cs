@@ -12,14 +12,14 @@ public class Click_On_Stress : MonoBehaviour {
 	public GameObject Back_Card;
 
 	//temporary integer
-public int tempCount;
+  public int tempCount;
 
 	// Use this for initialization
 	void Start () {
 		this.GetComponent<Button>().onClick.AddListener(triggerStressEvent);
 	}
 
-	public void triggerStressEvent (){
+	public void triggerStressEvent () {
 		Deb.Debug_Logger(" You clicked 'STRESS!' ");
 		if (_Main_Deck.areThereCardsOnPilesInTheMiddle()) {
 			int howMany = _Main_Deck.stosLewa.Count +  _Main_Deck.stosPrawa.Count;
@@ -38,18 +38,16 @@ public int tempCount;
 					Deb.Debug_Logger("You lost it. Cards were different or you weren't blocked.");
 					passCardsToTheLoser(" Player 2 ");
 				}
-		} else {
-			Deb.Debug_Logger("There are no cards in the middle.");
-		}
+				// else element of trigger
+		} else { Deb.Debug_Logger("There are not enough cards in the middle."); }
+	// end of trigger
 	}
 
 	public void passCardsToTheLoser(string whichPlayer){
 		for (int i = 0; i < _Main_Deck.stosLewa.Count; i++) {
-			temp.Add(_Main_Deck.stosLewa[i]);
-		}
+			temp.Add(_Main_Deck.stosLewa[i]);  }
 		for (int i = 0; i < _Main_Deck.stosPrawa.Count; i++) {
-			temp.Add(_Main_Deck.stosPrawa[i]);
-		}
+			temp.Add(_Main_Deck.stosPrawa[i]); }
 		//delete sprites on stacks
 		GameObject[] tagOfCard = GameObject.FindGameObjectsWithTag("DELETE_ME");
 		foreach (GameObject tagOf in tagOfCard ){
@@ -75,13 +73,19 @@ public int tempCount;
 		}
 		Deb.Debug_Logger(temp.Count + " cards added to " + whichPlayer + " deck.");
 		Deb.Debug_Logger(temp.Count + " cards removed from temporary list.");
-		for (int i = 0; i < temp.Count; i++) {
-			// if (temp.Count > 0) {
-				temp.Remove(temp[i]);
-			// }
-		}
+
+				temp.Clear();
+
 		deleteCardsOnStacks();
 		Deb.Debug_Logger("All cards removed from real lists.");
+	}
+
+	public void deleteCardsOnStacks(){
+		Deb.Debug_Logger(_Main_Deck.stosPrawa.Count + "cards from right stack removed.");
+		_Main_Deck.stosPrawa.Clear();
+
+		Deb.Debug_Logger(_Main_Deck.stosLewa.Count + " cards from left stack removed.");
+		_Main_Deck.stosLewa.Clear();
 	}
 
 	public void InstantiateCardsInPlayerDeck(string whichPlayer){
@@ -93,21 +97,6 @@ public int tempCount;
 			Back_Card = Instantiate(GameObject.Find("Back_Deck_Prefab"), Vector2.zero , Quaternion.identity);
 			Back_Card.transform.position = (Vector2)GameObject.Find("Deck_2").transform.position + new Vector2(Random.Range(0,10),Random.Range(0,10));
 			Back_Card.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("SP_Cards_In_Deck").transform,true); //make a child of
-		}
-	}
-
-	public void deleteCardsOnStacks(){
-		Deb.Debug_Logger(_Main_Deck.stosPrawa.Count + "cards from right stack removed.");
-		for (int i = 0; i < _Main_Deck.stosPrawa.Count; i++) {
-			if (_Main_Deck.stosPrawa.Count > 0) {
-				_Main_Deck.stosPrawa.Remove(_Main_Deck.stosPrawa[i]);
-			}
-		}
-		Deb.Debug_Logger(_Main_Deck.stosLewa.Count + " cards from left stack removed.");
-		for (int i = 0; i < _Main_Deck.stosLewa.Count; i++) {
-			if (_Main_Deck.stosLewa.Count > 0) {
-			_Main_Deck.stosLewa.Remove(_Main_Deck.stosLewa[i]);
-			}
 		}
 	}
 
