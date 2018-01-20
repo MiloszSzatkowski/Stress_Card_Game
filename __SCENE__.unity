@@ -1050,6 +1050,7 @@ MonoBehaviour:
   _Draggable: {fileID: 1178661031}
   Deb: {fileID: 1968903113}
   temp: []
+  tempCount: 0
 --- !u!114 &630123044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2191,6 +2192,7 @@ MonoBehaviour:
   Deb: {fileID: 1968903113}
   _Draggable: {fileID: 1178661031}
   _Slot_Watcher: {fileID: 1433257112}
+  blocked: 0
 --- !u!4 &1012852000
 Transform:
   m_ObjectHideFlags: 0
@@ -2272,6 +2274,34 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1063154420}
+--- !u!1 &1087753394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1087753395}
+  m_Layer: 0
+  m_Name: AI_COMPUTER_PLAYER
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1087753395
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1087753394}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 104.03627, y: 218.44981, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1108423342
 Prefab:
   m_ObjectHideFlags: 0
@@ -3861,6 +3891,7 @@ MonoBehaviour:
   _Draggable: {fileID: 1178661031}
   Deb: {fileID: 1968903113}
   temp: []
+  tempCount: 0
 --- !u!1 &2107823938
 GameObject:
   m_ObjectHideFlags: 0
