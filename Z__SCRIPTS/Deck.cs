@@ -26,6 +26,7 @@ public class Deck : MonoBehaviour {
 	public Draggable _Draggable;
 	public Slot_Watcher _Slot_Watcher;
 	public List<string> AiOnTableCards = new List<string>();
+	public List<string> allPlayersCardsOnTheTable = new List<string>();
 
 	//both players are blocked
 	public bool blocked = false;
@@ -64,6 +65,14 @@ public class Deck : MonoBehaviour {
 				//Add cards to check for Ai
 				AiOnTableCards.Add("slot_5_real"); AiOnTableCards.Add("slot_6_real");
 				AiOnTableCards.Add("slot_7_real"); AiOnTableCards.Add("slot_8_real");
+				//Add cards to all players Cards Finder
+				for (int i = 0; i < AiOnTableCards.Count; i++) {
+					allPlayersCardsOnTheTable.Add( AiOnTableCards[i] );
+				}
+				allPlayersCardsOnTheTable.Add("slot_1_real");
+				allPlayersCardsOnTheTable.Add("slot_2_real");
+				allPlayersCardsOnTheTable.Add("slot_3_real");
+				allPlayersCardsOnTheTable.Add("slot_4_real");
 				// end of Start
 				Deb.Debug_Logger("Game has started. Good Luck.");
 				//Update started
@@ -73,37 +82,38 @@ public class Deck : MonoBehaviour {
 
 		void Ai(){
 			for (int i = 0; i < AiOnTableCards.Count; i++) {
-					if (GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]) != null
-					&& stosPrawa.Count != 0
-					&& stosLewa.Count  != 0) {
+					if (GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]) != null) {
 						GameObject tempObj = GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]);
 						string tempName = GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]).GetComponent<UnityEngine.UI.Image>().sprite.name;
-						if (_Draggable.checkWhatCardItIs(tempName) ==
-						_Draggable.checkWhatCardItIs(stosLewa[stosLewa.Count-1].name)
-							  ) {
-									//the card can be dropped
-							_Draggable.moveToTop("SP_Cards_On_Table/" + AiOnTableCards[i]);
-							_Draggable.addCardToThe("LeftCard", tempObj.name);
-							GameObject.Find(AiOnTableCards[i]).tag = "DELETE_ME";
-							iTween.MoveTo(tempObj,(Vector2)GameObject.Find("LeftCard").transform.position,1);
-							// break;
-						} else if (_Draggable.checkWhatCardItIs(tempName) ==
-						_Draggable.checkWhatCardItIs(stosPrawa[stosPrawa.Count-1].name)
-								)	{
-									//the card can be dropped
-							_Draggable.moveToTop("SP_Cards_On_Table/" + AiOnTableCards[i]);
-							_Draggable.addCardToThe("RightCard", tempObj.name);
-							GameObject.Find(AiOnTableCards[i]).tag = "DELETE_ME";
-							iTween.MoveTo(tempObj,(Vector2)GameObject.Find("RightCard").transform.position,1);
-							// break;
+						if (stosLewa.Count  != 0) {
+									if (_Draggable.checkWhatCardItIs(tempName) ==
+									_Draggable.checkWhatCardItIs(stosLewa[stosLewa.Count-1].name)
+									  ) {
+											//the card can be dropped
+									_Draggable.moveToTop("SP_Cards_On_Table/" + AiOnTableCards[i]);
+									_Draggable.addCardToThe("LeftCard", tempObj.name);
+									GameObject.Find(AiOnTableCards[i]).tag = "DELETE_ME";
+									iTween.MoveTo(tempObj,(Vector2)GameObject.Find("LeftCard").transform.position,1);
+									// break;
+									}
+						} else if (stosPrawa.Count != 0) {
+									if (_Draggable.checkWhatCardItIs(tempName) ==
+									_Draggable.checkWhatCardItIs(stosPrawa[stosPrawa.Count-1].name)
+										)	{
+											//the card can be dropped
+									_Draggable.moveToTop("SP_Cards_On_Table/" + AiOnTableCards[i]);
+									_Draggable.addCardToThe("RightCard", tempObj.name);
+									GameObject.Find(AiOnTableCards[i]).tag = "DELETE_ME";
+									iTween.MoveTo(tempObj,(Vector2)GameObject.Find("RightCard").transform.position,1);
+									// break;
+									}
 						}
-					}
-					//Ai fn end
 				}
 			}
+			//Ai fn end
+		}
 
-		void Drag (string checkedNameOfCard){
-
+		void Drag (string checkedNameOfCard) {
 			// iTween.MoveTo(tempObj,(Vector2)GameObject.Find("LeftCard").transform.position,1);
 		}
 
@@ -111,7 +121,7 @@ public class Deck : MonoBehaviour {
 
 		void blockEvent(){
 			if(areAllCardsOnTheTableBlocked()){
-				if (areThereAnyPossibleMoves()) {
+				if (!AreTherePossibleMoves()) {
 					Deb.Debug_Logger("Block Event happening.");
 					blocked = true;
 				} else {
@@ -122,8 +132,49 @@ public class Deck : MonoBehaviour {
 			}
 		}
 
-		public bool areThereAnyPossibleMoves (){
-			return true;
+		public bool AreTherePossibleMoves (){
+			for (int i = 0; i < allPlayersCardsOnTheTable.Count; i++) {
+				GameObject tempObj1 = GameObject.Find("SP_Cards_On_Table/" + allPlayersCardsOnTheTable[i]);
+				GameObject tempObj2 = GameObject.Find("FP_Cards_On_Table/" + allPlayersCardsOnTheTable[i]);
+					if (tempObj1) {
+								 if (
+								 checkEqualityOfIntegers(
+								 		_Draggable.checkWhatCardItIs(tempObj1.GetComponent<UnityEngine.UI.Image>().sprite.name),
+								 		_Draggable.checkWhatCardItIs(stosLewa[stosLewa.Count-1].name),
+								 		_Draggable.checkWhatCardItIs(stosPrawa[stosPrawa.Count-1].name)
+								 		)
+								 ){
+									 // Deb.Debbug_Logger("There are some possible moves for 1st player.");
+									 return true;
+								 }
+				  } else if (tempObj2) {
+								if (
+								checkEqualityOfIntegers(
+										_Draggable.checkWhatCardItIs(tempObj2.GetComponent<UnityEngine.UI.Image>().sprite.name),
+										_Draggable.checkWhatCardItIs(stosLewa[stosLewa.Count-1].name),
+										_Draggable.checkWhatCardItIs(stosPrawa[stosPrawa.Count-1].name)
+										)
+								){
+									// Deb.Debbug_Logger("There are some possible moves for 2nd player.");
+									return true;
+								}
+				}
+				//end of loop
+			}
+			return false;
+			//end of void
+		}
+
+		public bool checkEqualityOfIntegers (int str1, int str2, int str3 = 0, int str4 = 0){
+			if (str1==str2) {
+				return true;
+			} else if (str1==str3){
+				return true;
+			} else if (str1==str4){
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public bool areAllCardsOnTheTableBlocked(){
