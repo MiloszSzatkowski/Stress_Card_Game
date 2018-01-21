@@ -46,11 +46,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
 	public void OnBeginDrag (PointerEventData eventData){
 			if (isDraggable==true) {
+				moveToTop();
 				startPosition = this.transform.position;
 				this.GetComponent<UnityEngine.UI.Image>().color= new Color (255,255,0);
 				dragOffset = eventData.position - (Vector2)this.transform.position;
-				this.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("Canvas").transform,true);
-				this.GetComponent<RectTransform>().SetAsLastSibling();
 			} else {
 				Deb.Debug_Logger("Card cannot be moved after drop.");
 			}
@@ -115,40 +114,60 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 		}
 	}
 
-	public void addCardToThe(string whichDeck){
-		this.transform.position =  Vector2.Lerp (
-		this.transform.position,
-		(Vector2)GameObject.Find(whichDeck).transform.position + new Vector2(Random.Range(0,3),Random.Range(0,3)), 1);
-		if (whichDeck=="LeftCard") {
-			_Deck.stosLewa.Add(this.GetComponent<UnityEngine.UI.Image>().sprite);
-		} else if (whichDeck=="RightCard") {
-			_Deck.stosPrawa.Add(this.GetComponent<UnityEngine.UI.Image>().sprite);
+	public void moveToTop(string outsider = "not asigned"){
+		if (outsider=="not asigned"){
+			this.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("Canvas").transform,true);
+			this.GetComponent<RectTransform>().SetAsLastSibling();
+		} else {
+			GameObject tttemp = GameObject.Find(outsider);
+			tttemp.GetComponent<RectTransform>().transform.SetParent(GameObject.Find("Canvas").transform,true);
+			tttemp.GetComponent<RectTransform>().SetAsLastSibling();
 		}
-		isDraggable = false;
+	}
+
+	public void addCardToThe(string whichDeck, string outsider = "not asigned"){
+		if (outsider=="not asigned") {
+			this.transform.position =  Vector2.Lerp (
+			this.transform.position,
+			(Vector2)GameObject.Find(whichDeck).transform.position + new Vector2(Random.Range(0,3),Random.Range(0,3)), 1);
+		}
+		if (outsider=="not asigned") {
+			if (whichDeck=="LeftCard") {
+				_Deck.stosLewa.Add(this.GetComponent<UnityEngine.UI.Image>().sprite);
+			} else if (whichDeck=="RightCard") {
+				_Deck.stosPrawa.Add(this.GetComponent<UnityEngine.UI.Image>().sprite); }
+		} else {
+			if 				(whichDeck=="LeftCard" ) {
+				_Deck.stosLewa.Add(GameObject.Find(outsider).GetComponent<UnityEngine.UI.Image>().sprite);
+			} else if (whichDeck=="RightCard") {
+				_Deck.stosPrawa.Add(GameObject.Find(outsider).GetComponent<UnityEngine.UI.Image>().sprite);
+			}
+		}
+		if (outsider=="not asigned") { isDraggable = false; }
 		//EMPTY slot for other cards
-		checkNamesForSlot();
+		if (outsider=="not asigned") { checkNamesForSlot(); } else { checkNamesForSlot(GameObject.Find(outsider).name); }
 		Deb.Debug_Logger("The card has been dropped.");
 	}
 
-	public void checkNamesForSlot(){
-		if (this.name=="slot_1_real"){
+	public void checkNamesForSlot(string outsider = "not asigned"){
+		if (this.name=="slot_1_real" || outsider=="slot_1_real"){
 			__Slot_Watcher.slot1 = false;
-		} else if (this.name=="slot_2_real"){
+		} else if (this.name=="slot_2_real" || outsider=="slot_2_real"){
 			__Slot_Watcher.slot2 = false;
-		} else if (this.name=="slot_3_real"){
+		} else if (this.name=="slot_3_real" || outsider=="slot_3_real"){
 			__Slot_Watcher.slot3 = false;
-		} else if (this.name=="slot_4_real"){
+		} else if (this.name=="slot_4_real" || outsider=="slot_4_real"){
 			__Slot_Watcher.slot4 = false;
-		} else if (this.name=="slot_5_real"){
+		} else if (this.name=="slot_5_real" || outsider=="slot_5_real"){
 			__Slot_Watcher.slot5 = false;
-		} else if (this.name=="slot_6_real"){
+		} else if (this.name=="slot_6_real" || outsider=="slot_6_real"){
 			__Slot_Watcher.slot6 = false;
-		} else if (this.name=="slot_7_real"){
+		} else if (this.name=="slot_7_real" || outsider=="slot_7_real"){
 			__Slot_Watcher.slot7 = false;
-		} else if (this.name=="slot_8_real"){
+		} else if (this.name=="slot_8_real" || outsider=="slot_8_real"){
 			__Slot_Watcher.slot8 = false;
 		}
-		Deb.Debug_Logger(this.name + "has been made empty.");
+		Deb.Debug_Logger(this.name + "is now empty.");
 	}
 
 	public bool checkIfDropAllowed (string side){

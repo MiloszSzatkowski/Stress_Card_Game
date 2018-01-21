@@ -25,6 +25,7 @@ public class Deck : MonoBehaviour {
 	public Debbug_Logger_Script Deb;
 	public Draggable _Draggable;
 	public Slot_Watcher _Slot_Watcher;
+	public List<string> AiOnTableCards = new List<string>();
 
 	//both players are blocked
 	public bool blocked = false;
@@ -60,10 +61,50 @@ public class Deck : MonoBehaviour {
 					}
 
 				}
+				//Add cards to check for Ai
+				AiOnTableCards.Add("slot_5_real"); AiOnTableCards.Add("slot_6_real");
+				AiOnTableCards.Add("slot_7_real"); AiOnTableCards.Add("slot_8_real");
 				// end of Start
 				Deb.Debug_Logger("Game has started. Good Luck.");
 				//Update started
 				InvokeRepeating("blockEvent", 0, 0.8f);
+				InvokeRepeating("Ai", 0, 1f);
+		}
+
+		void Ai(){
+			for (int i = 0; i < AiOnTableCards.Count; i++) {
+					if (GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]) != null
+					&& stosPrawa.Count != 0
+					&& stosLewa.Count  != 0) {
+						GameObject tempObj = GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]);
+						string tempName = GameObject.Find("SP_Cards_On_Table/" + AiOnTableCards[i]).GetComponent<UnityEngine.UI.Image>().sprite.name;
+						if (_Draggable.checkWhatCardItIs(tempName) ==
+						_Draggable.checkWhatCardItIs(stosLewa[stosLewa.Count-1].name)
+							  ) {
+									//the card can be dropped
+							_Draggable.moveToTop("SP_Cards_On_Table/" + AiOnTableCards[i]);
+							_Draggable.addCardToThe("LeftCard", tempObj.name);
+							GameObject.Find(AiOnTableCards[i]).tag = "DELETE_ME";
+							iTween.MoveTo(tempObj,(Vector2)GameObject.Find("LeftCard").transform.position,1);
+							// break;
+						} else if (_Draggable.checkWhatCardItIs(tempName) ==
+						_Draggable.checkWhatCardItIs(stosPrawa[stosPrawa.Count-1].name)
+								)	{
+									//the card can be dropped
+							_Draggable.moveToTop("SP_Cards_On_Table/" + AiOnTableCards[i]);
+							_Draggable.addCardToThe("RightCard", tempObj.name);
+							GameObject.Find(AiOnTableCards[i]).tag = "DELETE_ME";
+							iTween.MoveTo(tempObj,(Vector2)GameObject.Find("RightCard").transform.position,1);
+							// break;
+						}
+					}
+					//Ai fn end
+				}
+			}
+
+		void Drag (string checkedNameOfCard){
+
+			// iTween.MoveTo(tempObj,(Vector2)GameObject.Find("LeftCard").transform.position,1);
 		}
 
 		//UPDATE
