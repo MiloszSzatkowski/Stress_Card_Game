@@ -1050,6 +1050,7 @@ MonoBehaviour:
   _Draggable: {fileID: 1178661031}
   Deb: {fileID: 1968903113}
   temp: []
+  Back_Card: {fileID: 0}
   tempCount: 0
 --- !u!114 &630123044
 MonoBehaviour:
@@ -2192,6 +2193,7 @@ MonoBehaviour:
   Deb: {fileID: 1968903113}
   _Draggable: {fileID: 1178661031}
   _Slot_Watcher: {fileID: 1433257112}
+  AiOnTableCards: []
   blocked: 0
 --- !u!4 &1012852000
 Transform:
@@ -2282,6 +2284,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1087753395}
+  - component: {fileID: 1087753396}
   m_Layer: 0
   m_Name: AI_COMPUTER_PLAYER
   m_TagString: Untagged
@@ -2302,6 +2305,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1087753396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1087753394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 716a122a697d4054d8525ff97293330e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ComputerCards: []
 --- !u!1001 &1108423342
 Prefab:
   m_ObjectHideFlags: 0
@@ -3628,6 +3643,7 @@ MonoBehaviour:
   NewCards: {fileID: 0}
   _Deck_Behaviour: {fileID: 926679489}
   Deb: {fileID: 1968903113}
+  Ai: {fileID: 1087753396}
 --- !u!224 &1951221401 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224930123520405978, guid: 0d9fb1aed6c76ec4eaaaffa29d1be55a,
@@ -3891,6 +3907,7 @@ MonoBehaviour:
   _Draggable: {fileID: 1178661031}
   Deb: {fileID: 1968903113}
   temp: []
+  Back_Card: {fileID: 0}
   tempCount: 0
 --- !u!1 &2107823938
 GameObject:
