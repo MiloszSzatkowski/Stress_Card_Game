@@ -14,6 +14,10 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 	public List<string> values;
 	public string card_value;
 
+	//containers - 1_Deck 2_Deck 1_Table 2_Table Left_Stack Right_Stack
+	public List<GameObject> containers;
+	public GameObject container;
+
 	public Vector2 dragOffset = new Vector2(0f,0f);
 	public Vector2 startPosition = new Vector2(0f,0f);
 
