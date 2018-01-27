@@ -7,8 +7,51 @@ public class Initialize : MonoBehaviour {
 	public GameObject Card;
 	public GameObject CardInstance;
 
+	//positions
+	public float w ;
+	public float h ;
+	// public float w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
+	// public float h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
+         // Debug.Log("width: " + objectRectTransform.rect.width + ", height: " + objectRectTransform.rect.height);
+	public Vector2 center ;
+	public Vector2 leftStack ;
+	public Vector2 rightStack ;
+	public Vector2 cardsIn1stDeck ;
+	public Vector2 place_1 ;
+	public Vector2 place_2 ;
+	public Vector2 place_3 ;
+	public Vector2 place_4 ;
+	public Vector2 cardsIn2ndDeck ;
+	public Vector2 place_5 ;
+	public Vector2 place_6 ;
+	public Vector2 place_7 ;
+	public Vector2 place_8 ;
+	public List<Vector2> list_of_places;
+	// public Vector2 cardsIn2ndDeck = new Vector2 (Screen.width/5*2,Screen.height/4);
+
 	// Use this for initialization
 	void Start () {
+		  w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
+		  h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
+		// public float w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
+		// public float h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
+	         // Debug.Log("width: " + objectRectTransform.rect.width + ", height: " + objectRectTransform.rect.height);
+		center = new Vector2 (w/2,h/2);
+		leftStack = new Vector2 (w/8*3,h/2);
+		rightStack = new Vector2 (w/8*5,h/2);
+		cardsIn1stDeck = new Vector2 (w/8,h/4);
+		place_1 = new Vector2 (w/6*2,h/4);
+		place_2 = new Vector2 (w/6*3,h/4);
+		place_3 = new Vector2 (w/6*4,h/4);
+		place_4 = new Vector2 (w/6*5,h/4);
+		cardsIn2ndDeck = new Vector2 (w-w/8,h/4*3);
+		place_5 = new Vector2 (w-w/6*2,h/4*3);
+		place_6 = new Vector2 (w-w/6*3,h/4*3);
+		place_7 = new Vector2 (w-w/6*4,h/4*3);
+		place_8 = new Vector2 (w-w/6*5,h/4*3);
+		// public Vector2 cardsIn2ndDeck = new Vector2 (Screen.width/5*2,Screen.height/4);
+		list_of_places = new List<Vector2>
+		{leftStack,rightStack,cardsIn1stDeck,place_1,place_2,place_3,place_4,cardsIn2ndDeck,place_5,place_6,place_7,place_8};
 		int suits_counter = 0;
 		int values_counter = 0;
 		for (int i = 0; i < 14*4; i++) {
@@ -64,7 +107,11 @@ public class Initialize : MonoBehaviour {
 			//set position
 			// Vector3 rand = new Vector3 (Random.Range(0,i*8),Random.Range(0,i*8),1f);
 			// CardInstance.transform.Rotate(Vector3.up * 2);
-			// CardInstance.transform.position = new Vector3(0.1f, 0.1f, 1f) + rand;
+      // cardsIn1stDeck place_1
+
+			if (i<list_of_places.Count) {
+				CardInstance.transform.position = list_of_places[i];
+			}
 			// Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1f) + rand);
 			}
 
