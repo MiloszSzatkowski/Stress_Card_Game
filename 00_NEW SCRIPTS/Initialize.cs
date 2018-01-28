@@ -10,9 +10,7 @@ public class Initialize : MonoBehaviour {
 	//positions
 	public float w ;
 	public float h ;
-	// public float w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
-	// public float h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
-         // Debug.Log("width: " + objectRectTransform.rect.width + ", height: " + objectRectTransform.rect.height);
+
 	public Vector2 center ;	public Vector2 leftStack ;
 	public Vector2 rightStack ;	public Vector2 cardsIn1stDeck ;
 	public Vector2 place_1 ;	public Vector2 place_2 ;
@@ -21,15 +19,12 @@ public class Initialize : MonoBehaviour {
 	public Vector2 place_5 ;	public Vector2 place_6 ;
 	public Vector2 place_7 ;	public Vector2 place_8 ;
 	public List<Vector2> list_of_places;
-	// public Vector2 cardsIn2ndDeck = new Vector2 (Screen.width/5*2,Screen.height/4);
 
 	// Use this for initialization
 	void Start () {
 		  w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
 		  h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
-		// public float w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
-		// public float h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
-	         // Debug.Log("width: " + objectRectTransform.rect.width + ", height: " + objectRectTransform.rect.height);
+
 		center = new Vector2 (w/2,h/2);
 		leftStack = new Vector2 (w/8*3,h/2);		rightStack = new Vector2 (w/8*5,h/2);
 		cardsIn1stDeck = new Vector2 (w/8,h/4);
@@ -108,7 +103,10 @@ public class Initialize : MonoBehaviour {
 			// Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1f) + rand);
 			}
 			Debug.Log("Cards instantiated");
-			moveAllChildren(GameObject.Find("Temp"), GameObject.Find("1_Table"), cardsIn1stDeck);
+			moveAllChildren(GameObject.Find("Temp"), GameObject.Find("1_Deck"), cardsIn1stDeck);
+			//move all children to proper spaces
+
+			//define free spaces on table
 
 		}
 
@@ -116,22 +114,49 @@ public class Initialize : MonoBehaviour {
 			Debug.Log("Moved " + old_parent.transform.childCount + " objects from " + old_parent.name + " to " + new_parent.name);
 			for (int i=old_parent.transform.childCount-1; i >= 0; --i) {
 			Transform child = old_parent.transform.GetChild(i);
+			child.gameObject.GetComponent<Card_Class>().startPosition = place;
 			iTween.MoveTo(child.gameObject,place + new Vector2(Random.Range(0,8),Random.Range(0,8)),1);
 			child.SetParent(new_parent.transform, false);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
 				child.gameObject.GetComponent<UnityEngine.UI.Image>().sprite = child.gameObject.GetComponent<Card_Class>().onBackSprite;
-			}
+			} else if (place != cardsIn1stDeck && place != cardsIn2ndDeck){
+					child.gameObject.GetComponent<UnityEngine.UI.Image>().sprite = child.gameObject.GetComponent<Card_Class>().onTopSprite;
+				}
 			}
 		}
 
 		public void moveThis(GameObject go, GameObject new_parent, Vector2 place = default(Vector2)){
 			Debug.Log("Moved " + go.name + " to " + new_parent.name);
 			go.transform.SetParent(new_parent.transform, false);
+			go.GetComponent<Card_Class>().startPosition = place;
 			iTween.MoveTo(go,place + new Vector2(Random.Range(0,8),Random.Range(0,8)) ,1);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
 				go.GetComponent<UnityEngine.UI.Image>().sprite = go.GetComponent<Card_Class>().onBackSprite;
+			} else if (place != cardsIn1stDeck && place != cardsIn2ndDeck) {
+				go.GetComponent<UnityEngine.UI.Image>().sprite = go.GetComponent<Card_Class>().onTopSprite;
 			}
-			// go.transform.position = list_of_places[0];
+		}
+
+		public void checkForFreeSlot()
+		{
+			GameObject LastChildren = GameObject.Find("1_Deck").transform.GetChild(0).gameObject;
+			GameObject sp1 = GameObject.Find("spot_1");
+			GameObject sp2 = GameObject.Find("spot_2");
+			GameObject sp3 = GameObject.Find("spot_3");
+			GameObject sp4 = GameObject.Find("spot_4");
+
+						 if (sp1.transform.childCount==0){
+				moveThis(LastChildren, sp1, place_1);
+
+			} else if (sp2.transform.childCount==0 ){
+				moveThis(LastChildren, sp2, place_2);
+
+			} else if (sp3.transform.childCount==0 ){
+				moveThis(LastChildren, sp3, place_3);
+
+			} else if (sp4.transform.childCount==0){
+				moveThis(LastChildren, sp4, place_4);
+			}
 		}
 
 	//mono end
