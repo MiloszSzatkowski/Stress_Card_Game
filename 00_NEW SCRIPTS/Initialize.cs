@@ -7,6 +7,9 @@ public class Initialize : MonoBehaviour {
 	public GameObject Card;
 	public GameObject CardInstance;
 
+	//stress button
+	public GameObject StressButton;
+
 	//positions
 	public float w ;
 	public float h ;
@@ -38,6 +41,8 @@ public class Initialize : MonoBehaviour {
 		{leftStack,rightStack,cardsIn1stDeck,place_1,place_2,place_3,place_4,cardsIn2ndDeck,place_5,place_6,place_7,place_8};
 		int suits_counter = 0;
 		int values_counter = 0;
+
+
 		//LOOP ------------------------------------------------------------------------------
 		for (int i = 0; i < 14*4; i++) {
 			//counter
@@ -103,11 +108,24 @@ public class Initialize : MonoBehaviour {
 			// Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1f) + rand);
 			}
 			Debug.Log("Cards instantiated");
-			moveAllChildren(GameObject.Find("Temp"), GameObject.Find("1_Deck"), cardsIn1stDeck);
 			//move all children to proper spaces
+			moveAllChildren(GameObject.Find("Temp"), GameObject.Find("1_Deck"), cardsIn1stDeck);
+			//shuffle
+			shuffleChildren(GameObject.Find("1_Deck"));
 
-			//define free spaces on table
+			//add Stress button
+			StressButton = Instantiate(GameObject.Find("Stress_Button"), Vector2.zero , Quaternion.identity);
+			StressButton.transform.localScale = new Vector3 (w/200,h/330,1f);
+			moveThis(StressButton, GameObject.Find("Temp"), new Vector2 (w/4,h/2));
 
+		}
+
+		public void shuffleChildren(GameObject parentOfObjects){
+			if (parentOfObjects.transform.childCount>1) {
+				for (int i=parentOfObjects.transform.childCount-1; i >= 0; --i) {
+					parentOfObjects.transform.GetChild(i).gameObject.transform.SetSiblingIndex(Random.Range(0, i));
+				}
+			}
 		}
 
 		public void moveAllChildren(GameObject old_parent, GameObject new_parent, Vector2 place = default(Vector2)){
@@ -115,7 +133,7 @@ public class Initialize : MonoBehaviour {
 			for (int i=old_parent.transform.childCount-1; i >= 0; --i) {
 			Transform child = old_parent.transform.GetChild(i);
 			child.gameObject.GetComponent<Card_Class>().startPosition = place;
-			iTween.MoveTo(child.gameObject,place + new Vector2(Random.Range(0,8),Random.Range(0,8)),1);
+			iTween.MoveTo(child.gameObject,place + new Vector2(Random.Range(0,8),Random.Range(0,8)),0.5f);
 			child.SetParent(new_parent.transform, false);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
 				child.gameObject.GetComponent<UnityEngine.UI.Image>().sprite = child.gameObject.GetComponent<Card_Class>().onBackSprite;
@@ -129,7 +147,7 @@ public class Initialize : MonoBehaviour {
 			Debug.Log("Moved " + go.name + " to " + new_parent.name);
 			go.transform.SetParent(new_parent.transform, false);
 			go.GetComponent<Card_Class>().startPosition = place;
-			iTween.MoveTo(go,place + new Vector2(Random.Range(0,8),Random.Range(0,8)) ,1);
+			iTween.MoveTo(go,place + new Vector2(Random.Range(0,8),Random.Range(0,8)) ,0.5f);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
 				go.GetComponent<UnityEngine.UI.Image>().sprite = go.GetComponent<Card_Class>().onBackSprite;
 			} else if (place != cardsIn1stDeck && place != cardsIn2ndDeck) {

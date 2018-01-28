@@ -36,7 +36,7 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 			this.transform.position = eventData.position - dragOffset;
 			iTween.PunchRotation (gameObject, new Vector3 (80f,1,1), 2);
 		} else {
-			iTween.MoveTo(gameObject,startPosition,1);
+			iTween.MoveTo(gameObject,startPosition,0.3f);
 			Debug.Log("You can't drag this card.");
 		}
 	}
@@ -45,23 +45,23 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 	 {
 		if (gameObject.transform.position.y > Screen.height/3 && gameObject.transform.position.x > Screen.width/2)
 			{
-				if (checkIfMoveIsPossible(GameObject.Find("Right_Stack")) ||
+				if (checkIfMoveIsPossible(gameObject, GameObject.Find("Right_Stack")) ||
 				GameObject.Find("Right_Stack").transform.childCount == 0) {
 					_In.moveThis(gameObject, GameObject.Find("Right_Stack"),_In.rightStack);
 				} else {
-					iTween.MoveTo(gameObject,startPosition,1);
+					iTween.MoveTo(gameObject,startPosition,0.3f);
 				}
 		} else if (gameObject.transform.position.y > Screen.height/3 && gameObject.transform.position.x < Screen.width/2)
 			{
-				if (checkIfMoveIsPossible(GameObject.Find("Left_Stack")) ||
+				if (checkIfMoveIsPossible(gameObject, GameObject.Find("Left_Stack")) ||
 				GameObject.Find("Left_Stack").transform.childCount == 0)
 				{
 				_In.moveThis(gameObject, GameObject.Find("Left_Stack"),_In.leftStack);
 				} else {
-					iTween.MoveTo(gameObject,startPosition,1);
+					iTween.MoveTo(gameObject,startPosition,0.3f);
 				}
 		} else {
-			iTween.MoveTo(gameObject,startPosition,1);
+			iTween.MoveTo(gameObject,startPosition,0.3f);
 			Debug.Log("You can't drag this card.");
 		}
 	}
@@ -84,18 +84,18 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 		//bool end
 	}
 
-	public bool checkIfMoveIsPossible(GameObject cardParent) {
+	public bool checkIfMoveIsPossible(GameObject thisGameObject, GameObject cardParent) {
 		if (cardParent.transform.childCount>0) {
 			if (
-			gameObject.GetComponent<Card_Class>().card_suit ==
+			thisGameObject.GetComponent<Card_Class>().card_suit ==
 			cardParent.transform.GetChild(cardParent.transform.childCount-1)
 				.gameObject.GetComponent<Card_Class>().card_suit ||
 
-			gameObject.GetComponent<Card_Class>().card_value ==
+			thisGameObject.GetComponent<Card_Class>().card_value ==
 			cardParent.transform.GetChild(cardParent.transform.childCount-1)
 				.gameObject.GetComponent<Card_Class>().card_value ||
 
-			gameObject.GetComponent<Card_Class>().card_value == "Joker" ||
+			thisGameObject.GetComponent<Card_Class>().card_value == "Joker" ||
 			cardParent.transform.GetChild(cardParent.transform.childCount-1)
 				.gameObject.GetComponent<Card_Class>().card_value == "Joker"
 				) {
