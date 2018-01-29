@@ -116,9 +116,16 @@ public class Initialize : MonoBehaviour {
 			//add Stress button
 			StressButton = Instantiate(GameObject.Find("Stress_Button"), Vector2.zero , Quaternion.identity);
 			StressButton.transform.localScale = new Vector3 (w/200,h/330,1f);
-			moveThis(StressButton, GameObject.Find("Temp"), new Vector2 (w/4,h/2));
-
+			StressButton.transform.position = new Vector2 (w-w/3,h/9);
+			StressButton.transform.SetParent(GameObject.Find("Temp").transform);
+			InvokeRepeating("animateButton",0,3f);
 		}
+
+		public void animateButton (){
+			iTween.ScaleTo(StressButton, new Vector3 (0.2f,0.2f,1f), 1f);
+			iTween.ScaleTo(StressButton, new Vector3 (2f,2f,1f), 1f);
+		}
+
 
 		public void shuffleChildren(GameObject parentOfObjects){
 			if (parentOfObjects.transform.childCount>1) {
@@ -132,7 +139,7 @@ public class Initialize : MonoBehaviour {
 			Debug.Log("Moved " + old_parent.transform.childCount + " objects from " + old_parent.name + " to " + new_parent.name);
 			for (int i=old_parent.transform.childCount-1; i >= 0; --i) {
 			Transform child = old_parent.transform.GetChild(i);
-			child.gameObject.GetComponent<Card_Class>().startPosition = place;
+				child.gameObject.GetComponent<Card_Class>().startPosition = place;
 			iTween.MoveTo(child.gameObject,place + new Vector2(Random.Range(0,8),Random.Range(0,8)),0.5f);
 			child.SetParent(new_parent.transform, false);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
@@ -146,7 +153,7 @@ public class Initialize : MonoBehaviour {
 		public void moveThis(GameObject go, GameObject new_parent, Vector2 place = default(Vector2)){
 			Debug.Log("Moved " + go.name + " to " + new_parent.name);
 			go.transform.SetParent(new_parent.transform, false);
-			go.GetComponent<Card_Class>().startPosition = place;
+				go.GetComponent<Card_Class>().startPosition = place;
 			iTween.MoveTo(go,place + new Vector2(Random.Range(0,8),Random.Range(0,8)) ,0.5f);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
 				go.GetComponent<UnityEngine.UI.Image>().sprite = go.GetComponent<Card_Class>().onBackSprite;
