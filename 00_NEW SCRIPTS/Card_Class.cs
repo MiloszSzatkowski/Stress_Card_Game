@@ -70,7 +70,9 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     {
 			Debug.Log("You clicked on card.");
 			if (gameObject.transform.parent.gameObject == GameObject.Find("1_Deck")) {
-				_In.checkForFreeSlot();
+				_In.checkForFreeSlot(true);
+			} else if (gameObject.transform.parent.gameObject == GameObject.Find("2_Deck")) {
+				_In.checkForFreeSlot(false);
 			}
     }
 

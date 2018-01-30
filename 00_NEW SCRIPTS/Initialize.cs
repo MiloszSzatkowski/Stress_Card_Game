@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Initialize : MonoBehaviour {
 
+	//bool for switching
+	public bool switched = false;
+
 	public GameObject Card;
 	public GameObject CardInstance;
 
@@ -22,6 +25,8 @@ public class Initialize : MonoBehaviour {
 	public Vector2 place_5 ;	public Vector2 place_6 ;
 	public Vector2 place_7 ;	public Vector2 place_8 ;
 	public List<Vector2> list_of_places;
+
+	public int g = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -88,7 +93,11 @@ public class Initialize : MonoBehaviour {
 			CardInstance.GetComponent<UnityEngine.UI.Image>().color= new Color (1,1,1,1);
 
 			//set parent to Canvas
+			//divide cards between players
 			CardInstance.transform.SetParent(GameObject.Find("Temp").transform);
+
+			//shuffle
+			shuffleChildren(GameObject.Find("Temp")); shuffleChildren(GameObject.Find("Temp"));
 
 			//making the size dependant on window
 			CardInstance.transform.localScale = new Vector3 (w/200,h/330,1f);
@@ -98,34 +107,81 @@ public class Initialize : MonoBehaviour {
 			// CardInstance.transform.Rotate(Vector3.up * 2);
       // cardsIn1stDeck place_1
 
-				if (i<list_of_places.Count) {
-					CardInstance.transform.position = list_of_places[i];
-				}
+				// if (i<list_of_places.Count) {
+				// 	CardInstance.transform.position = list_of_places[i];
+				// }
 
-				//enable particle System
-				// CardInstance.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
-				// CardInstance.transform.GetChild(1).GetComponent<ParticleSystem>().enableEmission = true;
 			// Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1f) + rand);
 			}
 			Debug.Log("Cards instantiated");
-			//move all children to proper spaces
-			moveAllChildren(GameObject.Find("Temp"), GameObject.Find("1_Deck"), cardsIn1stDeck);
-			//shuffle
-			shuffleChildren(GameObject.Find("1_Deck"));
+
+			for (int i = 0; i<14*4; i++){
+				if (i < 14*2 || i == 14*2) {
+					moveThis(GameObject.Find("Temp").transform.GetChild(0).gameObject, GameObject.Find("1_Deck"), cardsIn1stDeck);
+				} else {
+					moveThis(GameObject.Find("Temp").transform.GetChild(0).gameObject, GameObject.Find("2_Deck"), cardsIn2ndDeck);
+				}
+			}
+
+
 
 			//add Stress button
 			StressButton = Instantiate(GameObject.Find("Stress_Button"), Vector2.zero , Quaternion.identity);
 			StressButton.transform.localScale = new Vector3 (w/200,h/330,1f);
-			StressButton.transform.position = new Vector2 (w-w/3,h/9);
+			StressButton.transform.position = new Vector2 (w-w/2f,h/14f);
 			StressButton.transform.SetParent(GameObject.Find("Temp").transform);
-			InvokeRepeating("animateButton",0,3f);
+			InvokeRepeating("animateButton",0,1f);
+
+			//Init Ai
+			InvokeRepeating("Ai",0,2f);
+			//Init Ai move
+			InvokeRepeating("Ai_Move",0,0.85f);
 		}
 
 		public void animateButton (){
-			iTween.ScaleTo(StressButton, new Vector3 (0.2f,0.2f,1f), 1f);
-			iTween.ScaleTo(StressButton, new Vector3 (2f,2f,1f), 1f);
+			if (switched==true) {
+				switched = false;
+				iTween.ScaleTo(StressButton, new Vector3 (1f,1f,1f), 1f);
+			} else {
+				switched = true;
+				iTween.ScaleTo(StressButton, new Vector3 (1.2f,1.2f,1f), 1f);
+			}
 		}
 
+		public void Ai(){
+
+			checkForFreeSlot(false);
+			checkForFreeSlot(false);
+			checkForFreeSlot(false);
+			checkForFreeSlot(false);
+			Debug.Log("Ai working");
+		}
+
+		public void Ai_Move ()
+		{
+			Card_Class _Card_Class = CardInstance.GetComponent<Card_Class>();
+			GameObject left = GameObject.Find("Left_Stack");
+			GameObject right = GameObject.Find("Right_Stack");
+
+			List<GameObject> spots = new List<GameObject> {
+				GameObject.Find("spot_5"),
+				GameObject.Find("spot_6"),
+				GameObject.Find("spot_7"),
+				GameObject.Find("spot_8")};
+
+			if(g == spots.Count) {g = 0; }
+				if (spots[g].transform.childCount == 1) {
+					if (_Card_Class.checkIfMoveIsPossible(spots[g].transform.GetChild(0).gameObject, left)
+					|| left.transform.childCount == 0) {
+						moveThis(spots[g].transform.GetChild(0).gameObject, left, leftStack);
+					} else if (_Card_Class.checkIfMoveIsPossible(spots[g].transform.GetChild(0).gameObject, right)
+					|| right.transform.childCount == 0) {
+						moveThis(spots[g].transform.GetChild(0).gameObject, right, rightStack);
+					}
+				}
+
+			g++;
+		}
 
 		public void shuffleChildren(GameObject parentOfObjects){
 			if (parentOfObjects.transform.childCount>1) {
@@ -152,9 +208,9 @@ public class Initialize : MonoBehaviour {
 
 		public void moveThis(GameObject go, GameObject new_parent, Vector2 place = default(Vector2)){
 			Debug.Log("Moved " + go.name + " to " + new_parent.name);
+			iTween.MoveTo(go,place + new Vector2(Random.Range(0,8),Random.Range(0,8)) ,0.5f);
 			go.transform.SetParent(new_parent.transform, false);
 				go.GetComponent<Card_Class>().startPosition = place;
-			iTween.MoveTo(go,place + new Vector2(Random.Range(0,8),Random.Range(0,8)) ,0.5f);
 			if (place == cardsIn1stDeck || place == cardsIn2ndDeck) {
 				go.GetComponent<UnityEngine.UI.Image>().sprite = go.GetComponent<Card_Class>().onBackSprite;
 			} else if (place != cardsIn1stDeck && place != cardsIn2ndDeck) {
@@ -162,25 +218,50 @@ public class Initialize : MonoBehaviour {
 			}
 		}
 
-		public void checkForFreeSlot()
+		public void checkForFreeSlot(bool FirstPlayer = true)
 		{
-			GameObject LastChildren = GameObject.Find("1_Deck").transform.GetChild(0).gameObject;
-			GameObject sp1 = GameObject.Find("spot_1");
-			GameObject sp2 = GameObject.Find("spot_2");
-			GameObject sp3 = GameObject.Find("spot_3");
-			GameObject sp4 = GameObject.Find("spot_4");
+			if (FirstPlayer==true) {
+				if (GameObject.Find("1_Deck").transform.childCount>0) {
+					GameObject LastChildren = GameObject.Find("1_Deck").transform.GetChild(0).gameObject;
+					GameObject sp1 = GameObject.Find("spot_1");
+					GameObject sp2 = GameObject.Find("spot_2");
+					GameObject sp3 = GameObject.Find("spot_3");
+					GameObject sp4 = GameObject.Find("spot_4");
 
-						 if (sp1.transform.childCount==0){
-				moveThis(LastChildren, sp1, place_1);
+					if (sp1.transform.childCount==0){
+						moveThis(LastChildren, sp1, place_1);
 
-			} else if (sp2.transform.childCount==0 ){
-				moveThis(LastChildren, sp2, place_2);
+					} else if (sp2.transform.childCount==0 ){
+						moveThis(LastChildren, sp2, place_2);
 
-			} else if (sp3.transform.childCount==0 ){
-				moveThis(LastChildren, sp3, place_3);
+					} else if (sp3.transform.childCount==0 ){
+						moveThis(LastChildren, sp3, place_3);
 
-			} else if (sp4.transform.childCount==0){
-				moveThis(LastChildren, sp4, place_4);
+					} else if (sp4.transform.childCount==0){
+						moveThis(LastChildren, sp4, place_4);
+					}
+				} else { Debug.Log("There are no cards on deck.");}
+			} else {
+				if (GameObject.Find("2_Deck").transform.childCount>0) {
+					GameObject LastChildren = GameObject.Find("2_Deck").transform.GetChild(0).gameObject;
+					GameObject sp5 = GameObject.Find("spot_5");
+					GameObject sp6 = GameObject.Find("spot_6");
+					GameObject sp7 = GameObject.Find("spot_7");
+					GameObject sp8 = GameObject.Find("spot_8");
+
+					if (sp5.transform.childCount==0){
+						moveThis(LastChildren, sp5, place_5);
+
+					} else if (sp6.transform.childCount==0 ){
+						moveThis(LastChildren, sp6, place_6);
+
+					} else if (sp7.transform.childCount==0 ){
+						moveThis(LastChildren, sp7, place_7);
+
+					} else if (sp8.transform.childCount==0){
+						moveThis(LastChildren, sp8, place_8);
+					}
+				} else { Debug.Log("There are no cards on deck.");}
 			}
 		}
 
