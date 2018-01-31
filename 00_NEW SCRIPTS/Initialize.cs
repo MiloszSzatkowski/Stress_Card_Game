@@ -28,6 +28,8 @@ public class Initialize : MonoBehaviour {
 
 	public int g = 0;
 
+	public Click_Stress _Click_Stress;
+
 	// Use this for initialization
 	void Start () {
 		  w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
@@ -49,7 +51,7 @@ public class Initialize : MonoBehaviour {
 
 
 		//LOOP ------------------------------------------------------------------------------
-		for (int i = 0; i < 14*4; i++) {
+		for (int i = 0; i < 14*8; i++) {
 			//counter
 			CardInstance = Instantiate(Card, Vector2.zero , Quaternion.identity);
 
@@ -115,15 +117,13 @@ public class Initialize : MonoBehaviour {
 			}
 			Debug.Log("Cards instantiated");
 
-			for (int i = 0; i<14*4; i++){
-				if (i < 14*2 || i == 14*2) {
+			for (int i = 0; i<14*8; i++){
+				if (i < 14*4 || i == 14*4) {
 					moveThis(GameObject.Find("Temp").transform.GetChild(0).gameObject, GameObject.Find("1_Deck"), cardsIn1stDeck);
 				} else {
 					moveThis(GameObject.Find("Temp").transform.GetChild(0).gameObject, GameObject.Find("2_Deck"), cardsIn2ndDeck);
 				}
 			}
-
-
 
 			//add Stress button
 			StressButton = Instantiate(GameObject.Find("Stress_Button"), Vector2.zero , Quaternion.identity);
@@ -133,9 +133,11 @@ public class Initialize : MonoBehaviour {
 			InvokeRepeating("animateButton",0,1f);
 
 			//Init Ai
-			InvokeRepeating("Ai",0,2f);
+			InvokeRepeating("Ai",2f,2f);
 			//Init Ai move
-			InvokeRepeating("Ai_Move",0,0.85f);
+			InvokeRepeating("Ai_Move",3f,0.85f);
+			//init Ai stressing players
+			InvokeRepeating("Ai_Stress",2f,1.2f);
 		}
 
 		public void animateButton (){
@@ -180,7 +182,22 @@ public class Initialize : MonoBehaviour {
 					}
 				}
 
-			g++;
+				if(Random.Range(0,100)>50){
+						g++;
+				} else if (g != 0){
+						g--;
+				}
+		}
+
+		public void Ai_Stress ()
+		{
+			if (_Click_Stress.blocked() || _Click_Stress.cardsHaveSameValueOrThereIsAJoker()) {
+				_Click_Stress.passCards("2");
+				Debug.Log("Stress! Player 2 gets the cards.");
+			} else {
+				Debug.Log("Stress! Player 1 gets the cards.");
+				_Click_Stress.passCards("1");
+			}
 		}
 
 		public void shuffleChildren(GameObject parentOfObjects){
