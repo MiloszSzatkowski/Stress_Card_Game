@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Initialize : MonoBehaviour {
 
@@ -12,6 +14,8 @@ public class Initialize : MonoBehaviour {
 
 	//stress button
 	public GameObject StressButton;
+
+	public Text _text;
 
 	//positions
 	public float w ;
@@ -25,6 +29,7 @@ public class Initialize : MonoBehaviour {
 	public Vector2 place_5 ;	public Vector2 place_6 ;
 	public Vector2 place_7 ;	public Vector2 place_8 ;
 	public List<Vector2> list_of_places;
+	public GameObject[] allCards;
 
 	public int g = 0;
 
@@ -32,6 +37,7 @@ public class Initialize : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		  w = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.width;
 		  h = GameObject.Find("Canvas").GetComponent<RectTransform> ().rect.height;
 
@@ -104,16 +110,9 @@ public class Initialize : MonoBehaviour {
 			//making the size dependant on window
 			CardInstance.transform.localScale = new Vector3 (w/200,h/330,1f);
 
-			//set position
-			// Vector3 rand = new Vector3 (Random.Range(0,i*8),Random.Range(0,i*8),1f);
-			// CardInstance.transform.Rotate(Vector3.up * 2);
-      // cardsIn1stDeck place_1
+			//tag for later search
+			CardInstance.tag = "Player";
 
-				// if (i<list_of_places.Count) {
-				// 	CardInstance.transform.position = list_of_places[i];
-				// }
-
-			// Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1f) + rand);
 			}
 			Debug.Log("Cards instantiated");
 
@@ -132,12 +131,22 @@ public class Initialize : MonoBehaviour {
 			StressButton.transform.SetParent(GameObject.Find("Temp").transform);
 			InvokeRepeating("animateButton",0,1f);
 
+			// //Init Ai
+			// InvokeRepeating("Ai",2f,2f);
+			// //Init Ai move
+			// InvokeRepeating("Ai_Move",3f,0.85f);
+			// //init Ai stressing players
+			// InvokeRepeating("Ai_Stress",2f,1.2f);
+
+			//Debug only
 			//Init Ai
-			InvokeRepeating("Ai",2f,2f);
+			InvokeRepeating("Ai",2f,0.5f);
 			//Init Ai move
-			InvokeRepeating("Ai_Move",3f,0.85f);
+			InvokeRepeating("Ai_Move",3f,0.3f);
 			//init Ai stressing players
-			InvokeRepeating("Ai_Stress",2f,1.2f);
+			InvokeRepeating("Ai_Stress",2f,0.7f);
+
+
 		}
 
 		public void animateButton (){
@@ -176,9 +185,11 @@ public class Initialize : MonoBehaviour {
 					if (_Card_Class.checkIfMoveIsPossible(spots[g].transform.GetChild(0).gameObject, left)
 					|| left.transform.childCount == 0) {
 						moveThis(spots[g].transform.GetChild(0).gameObject, left, leftStack);
+						checkWin(false);
 					} else if (_Card_Class.checkIfMoveIsPossible(spots[g].transform.GetChild(0).gameObject, right)
 					|| right.transform.childCount == 0) {
 						moveThis(spots[g].transform.GetChild(0).gameObject, right, rightStack);
+						checkWin(false);
 					}
 				}
 
@@ -192,12 +203,63 @@ public class Initialize : MonoBehaviour {
 		public void Ai_Stress ()
 		{
 			if (_Click_Stress.blocked() || _Click_Stress.cardsHaveSameValueOrThereIsAJoker()) {
-				_Click_Stress.passCards("2");
-				Debug.Log("Stress! Player 2 gets the cards.");
-			} else {
 				Debug.Log("Stress! Player 1 gets the cards.");
 				_Click_Stress.passCards("1");
 			}
+		}
+
+		public bool checkWin(bool player1){
+			if (player1 == true) {
+				if (
+				GameObject.Find("spot_1").transform.childCount==0 &&
+				GameObject.Find("spot_2").transform.childCount==0 &&
+				GameObject.Find("spot_3").transform.childCount==0 &&
+				GameObject.Find("spot_4").transform.childCount==0 &&
+				GameObject.Find("1_Deck").transform.childCount==0)
+				{
+					Debug.Log("Player 1 Won");
+
+					 foreach (GameObject card in GameObject.FindGameObjectsWithTag("Player"))
+		        {
+		            moveThis(card,GameObject.Find("Temp"),
+								new Vector2(Random.Range(0,w),Random.Range(0,h)));
+		        }
+						CancelAi();
+						SceneManager.LoadScene("End Of Game - 1st PLayer");
+					return true;
+
+				} else {
+					return false;
+				}
+			} else {
+				if (
+				GameObject.Find("spot_5").transform.childCount==0 &&
+				GameObject.Find("spot_6").transform.childCount==0 &&
+				GameObject.Find("spot_7").transform.childCount==0 &&
+				GameObject.Find("spot_8").transform.childCount==0 &&
+				GameObject.Find("2_Deck").transform.childCount==0)
+				{
+					Debug.Log("Player 2 Won");
+
+					foreach (GameObject card in GameObject.FindGameObjectsWithTag("Player"))
+					 {
+						 moveThis(card,GameObject.Find("Temp"),
+						 new Vector2(Random.Range(0,w),Random.Range(0,h)));
+					 }
+					 CancelAi();
+					 SceneManager.LoadScene("End Of Game - 2nd PLayer");
+					return true;
+
+				} else {
+					return false;
+				}
+			}
+		}
+
+		public void CancelAi (){
+			CancelInvoke("Ai");
+			CancelInvoke("Ai_Move");
+			CancelInvoke("Ai_Stress");
 		}
 
 		public void shuffleChildren(GameObject parentOfObjects){

@@ -48,6 +48,7 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 				if (checkIfMoveIsPossible(gameObject, GameObject.Find("Right_Stack")) ||
 				GameObject.Find("Right_Stack").transform.childCount == 0) {
 					_In.moveThis(gameObject, GameObject.Find("Right_Stack"),_In.rightStack);
+					_In.checkWin(true);
 				} else {
 					iTween.MoveTo(gameObject,startPosition,0.3f);
 				}
@@ -57,6 +58,7 @@ public class Card_Class : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 				GameObject.Find("Left_Stack").transform.childCount == 0)
 				{
 				_In.moveThis(gameObject, GameObject.Find("Left_Stack"),_In.leftStack);
+				_In.checkWin(true);
 				} else {
 					iTween.MoveTo(gameObject,startPosition,0.3f);
 				}
